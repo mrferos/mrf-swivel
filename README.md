@@ -24,7 +24,7 @@ $swivel = $serviceLocator->get('MrfSwivel\Swivel');
 ```
 
 ### Via setter injection
-In the class you're interested in using it, implement the `MrfSwivel\Service\SwivelAwareInterface` which will
+In the class you're interested in using it, implement the interface `MrfSwivel\Service\SwivelAwareInterface` which will
 enforce the need for the `setSwivel` and `getSwivel` methods. For convenience I've include a trait with both
 methods `MrfSwivel\Service\SwivelAwareInterfaceTrait`
 
