@@ -1,6 +1,8 @@
 <?php
 return array(
-    'features' => array(
+    'swivel' => array(
+        'features' => array(
 
+        )
     )
 );
