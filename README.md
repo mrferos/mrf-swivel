@@ -8,7 +8,7 @@ Was in need of a feature library that would work easily enough with ZF2, thankfu
 
 1. Grab it via composer:
 ```bash
-composer require mrferos/MrfSwivel
+composer require mrferos/mrf-swivel
 ```
 2. Copy the configuration file: 
 ```bash

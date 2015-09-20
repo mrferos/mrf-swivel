@@ -1,5 +1,5 @@
 {
-  "name": "mrferos/MrfSwivel",
+  "name": "mrferos/mrf-swivel",
   "description": "ZF2 module for swivel",
   "require": {
     "zumba/swivel": "^1.0",
