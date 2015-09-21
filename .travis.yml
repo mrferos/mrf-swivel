@@ -6,3 +6,4 @@ php:
   - nightly
 install:
   - composer install
+script: phpunit -c phpunit.dist.xml
