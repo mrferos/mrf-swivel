@@ -12,18 +12,28 @@ class SwivelConfigFactory implements FactoryInterface
      * Create service
      *
      * @param ServiceLocatorInterface $serviceLocator
-     * @return mixed
+     * @return Config
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /** @var array $config */
         $config = $serviceLocator->get('Config');
-        if (!array_key_exists('swivel', $config)
-            || !array_key_exists('features', $config['swivel'])) {
-            throw new \RuntimeException('Could not find swivel.features configuration');
+        if (!array_key_exists('swivel', $config)) {
+            throw new \RuntimeException('Could not find swivel config');
         }
 
-        return new Config($config['swivel']['features']);
+        $swivelConfig = array_key_exists('features', $config['swivel']) ?
+                            $config['swivel']['features'] : array();
+
+        if (array_key_exists('controller_features', $config['swivel'])) {
+            foreach ($config['swivel']['controller_features'] as $key => $controllerConfig) {
+                if (array_key_exists('buckets', $controllerConfig)) {
+                    $swivelConfig[$key] = $controllerConfig['buckets'];
+                }
+            }
+        }
+
+        return new Config($swivelConfig);
     }
 
 }
