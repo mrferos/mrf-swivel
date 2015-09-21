@@ -1,14 +1,40 @@
 <?php
 namespace MrfSwivel;
 
+use MrfSwivel\Route\RouteEvent;
+use Zend\EventManager\EventInterface;
+use Zend\EventManager\EventManagerInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface,
-    Zend\ModuleManager\Feature\ControllerPluginProviderInterface;
+    Zend\ModuleManager\Feature\ControllerPluginProviderInterface,
+    Zend\ModuleManager\Feature\BootstrapListenerInterface;
+use Zend\Mvc\Application;
+use Zend\Mvc\MvcEvent;
 use Zend\ServiceManager\AbstractPluginManager;
 
 class Module implements
     ConfigProviderInterface,
-    ControllerPluginProviderInterface
+    ControllerPluginProviderInterface,
+    BootstrapListenerInterface
 {
+    /**
+     * Listen to the bootstrap event
+     *
+     * @param EventInterface $e
+     * @return array
+     */
+    public function onBootstrap(EventInterface $e)
+    {
+        /** @var Application $app */
+        $app = $e->getApplication();
+        $serviceLocator = $app->getServiceManager();
+        /** @var RouteEvent $featureDispatchEvent */
+        $routeEvent = $serviceLocator->get('MrfSwivel\Route\RouteEvent');
+
+        /** @var EventManagerInterface $eventManager */
+        $eventManager = $app->getEventManager();
+        $eventManager->attach(MvcEvent::EVENT_ROUTE, $routeEvent);
+    }
+
     /**
      * Returns configuration to merge with application configuration
      *

@@ -2,6 +2,7 @@
 namespace MrfSwivelTest\Service;
 
 use MrfSwivel\Service\SwivelConfigFactory;
+use Zumba\Swivel\Map;
 
 class SwivelConfigFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -10,7 +11,7 @@ class SwivelConfigFactoryTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('\RuntimeException');
 
         $serviceLocator = $this->getMock('\Zend\ServiceManager\ServiceLocatorInterface');
-        $serviceLocator->expects($this->once())
+        $serviceLocator->expects($this->any())
                         ->method('get')
                         ->with('Config')
                         ->willReturn(array());
@@ -19,18 +20,31 @@ class SwivelConfigFactoryTest extends \PHPUnit_Framework_TestCase
         $swivelConfigFactory->createService($serviceLocator);
     }
 
-    public function testNonExistentFeatureConfig()
+    public function testGetConfigWithControllerFactories()
     {
-        $this->setExpectedException('\RuntimeException');
-
         $serviceLocator = $this->getMock('\Zend\ServiceManager\ServiceLocatorInterface');
         $serviceLocator->expects($this->once())
             ->method('get')
             ->with('Config')
-            ->willReturn(array('swivel' => array()));
+            ->willReturn(array(
+                'swivel' => array(
+                    'controller_features' => array(
+                        'test' => array(
+                            'buckets' => array(1,2,3)
+                        )
+                    )
+                )
+            )
+        );
 
         $swivelConfigFactory = new SwivelConfigFactory();
-        $swivelConfigFactory->createService($serviceLocator);
+        $config = $swivelConfigFactory->createService($serviceLocator);
+        $reflObject = new \ReflectionObject($config);
+        $reflMap = $reflObject->getProperty('map');
+        $reflMap->setAccessible(true);
+        /** @var Map $map */
+        $map = $reflMap->getValue($config);
+        $this->assertArrayHasKey('test', $map->getMapData());
     }
 
     public function testGetConfig()
