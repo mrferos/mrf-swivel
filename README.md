@@ -1,3 +1,6 @@
+![](https://api.travis-ci.org/mrferos/mrf-swivel.svg)
+![https://scrutinizer-ci.com/g/mrferos/mrf-swivel/](https://scrutinizer-ci.com/g/mrferos/mrf-swivel/badges/quality-score.png?b=master)
+
 MrfSwivel
 ====
 
